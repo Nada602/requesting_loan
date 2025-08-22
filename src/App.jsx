@@ -1,30 +1,38 @@
 import { useState } from "react";
 import BopUp from "./BopUp";
+import InputComponent from "./InputComponent";
 function App() {
-  const[personData,setPersonData]=useState({
-      name:"",
-      phone:"",
-      age:"",
-      status:false,
-      salary:""
+  const [personData, setPersonData] = useState({
+    name: "",
+    phone: "",
+    age: "",
+    status: false,
+    salary: "",
+  });
+  const [show, setShow] = useState(false);
 
-    })
-    const [show, setShow] = useState(false);
+  const close = () => setShow(false);
 
-    const close = () => setShow(false);
-    
-    const [message,setMessage]=useState("");
-    function submithandeler() {
-      
-      
-        if (personData.age > 100 || personData.age < 25) {
-          setMessage("Age is Not Allowed");
-        } else if (personData.phone.length < 12) {
-          setMessage("Phone Is Not Allowed");
-        } else {
-          setMessage("Submit Data Successfully");
-        }
+  const [message, setMessage] = useState("");
+  function submithandeler() {
+    if (personData.age > 100 || personData.age < 25) {
+      setMessage("Age is Not Allowed");
+    } else if (personData.phone.length < 12) {
+      setMessage("Phone Is Not Allowed");
+    } else {
+      setMessage("Submit Data Successfully");
     }
+  }
+
+  function handlePhoneInputChange(value) {
+    setPersonData({ ...personData, phone: value });
+  }
+  function handleNameInputChange(value) {
+    setPersonData({ ...personData, name: value });
+  }
+  function handleAgeInputChange(value) {
+    setPersonData({ ...personData, age: value });
+  }
   return (
     <>
       <div
@@ -36,48 +44,31 @@ function App() {
           action=""
           onSubmit={(e) => {
             e.preventDefault();
-            setShow(true)
+            setShow(true);
           }}
         >
-          <label className="form-label fw-bold">Name</label>
-          <input
-          placeholder="Nada Essam"
+          <InputComponent
             value={personData.name}
-            onChange={(e) => {
-              setPersonData({ ...personData, name: e.target.value });
-            }}
-            className="form-control"
+            handelChange={handleNameInputChange}
+            placetext="Nada Essam"
             type="text"
-            required
           />
 
-          <label className="form-label fw-bold">Phone</label>
-          <input
-
+          <InputComponent
             value={personData.phone}
-            onChange={(e) => {
-              setPersonData({ ...personData, phone: e.target.value });
-            }}
-            className="form-control"
+            handelChange={handlePhoneInputChange}
+            placetext="01143495516"
             type="tel"
-            id="phone"
-            name="phone"
-            placeholder="+20 10 1234 5678"
-            required
           />
 
-          <label className="form-label fw-bold">Age</label>
-          <input
-          placeholder="Greater than 25"
+          <InputComponent
             value={personData.age}
-            onChange={(e) => {
-              setPersonData({ ...personData, age: e.target.value });
-            }}
-            className="form-control"
+            handelChange={handleAgeInputChange}
+            placetext="up to 100"
             type="number"
           />
 
-          <div className="fw-bolder m-3 d-flex flex-column justify-content-center align-items-center">
+          <div className="fw-bolder m-2 d-flex flex-column justify-content-center align-items-center">
             Are You Employee
             <input
               value="employee"
@@ -96,7 +87,6 @@ function App() {
               setPersonData({ ...personData, salary: e.target.value });
             }}
             className="form-control"
-            
             required
           >
             <option value=""></option>
@@ -120,8 +110,7 @@ function App() {
             </button>
           </div>
         </form>
-        {message &&
-        <BopUp show={show} close={close} text={message}/>}
+        {message && <BopUp show={show} close={close} text={message} />}
       </div>
     </>
   );
